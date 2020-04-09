@@ -109,6 +109,23 @@ function detectCollision(obs) {
   });
 }
 
+function covidCollision(virus){
+  var a = { x: virus.x, y: virus.y, width: virus.w, height: virus.h-20 }; //Our obstacles
+  var b = { x: car.x, y: car.y, width: car.w, height: car.h }; //Our car
+  if (
+    a.x < b.x + b.width &&
+    a.x + a.width > b.x &&
+    a.y < b.y + b.height &&
+    a.y + a.height > b.y
+  ) {
+    // collision detected!
+    setTimeout(() => {
+      window.location.reload();
+    }, 3000);
+    requestAnimationFrame.cancelAnimationFrame(startGame)
+  }
+}
+
 //CAR MOVEMENT
 
 function detectMove() {
@@ -151,6 +168,8 @@ function startGame() {
   secondObstacle(i, arrObs[1]);
   thirdObstacle(i, arrObs[2]);
   detectCollision(arrObs);
+
+  covidCollision(covids)
 
   animateId = window.requestAnimationFrame(startGame); //Game rendering -infinite loop that goes super fast
 }

@@ -122,6 +122,7 @@ function covidCollision(virus){
     setTimeout(() => {
       window.location.reload();
     }, 2000);
+    alert("Ooopsss... covid got ya buddy!")
     requestAnimationFrame.cancelAnimationFrame(startGame)
   }
 }

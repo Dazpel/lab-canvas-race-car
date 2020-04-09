@@ -121,7 +121,7 @@ function covidCollision(virus){
     // collision detected!
     setTimeout(() => {
       window.location.reload();
-    }, 3000);
+    }, 2000);
     requestAnimationFrame.cancelAnimationFrame(startGame)
   }
 }

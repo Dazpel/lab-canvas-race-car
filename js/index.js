@@ -31,7 +31,7 @@ var car = {
 
 var covids = {
   x: 50,
-  y: -1000,
+  y: -7000,
   w: 500,
   h: 600,
   image: covid,
@@ -81,7 +81,7 @@ function thirdObstacle(i, obstacle) {
 }
 
 function boyCovid(i) {
-  ctx.drawImage(covid, covids.x, (covids.y += i), covids.w, covids.h);
+  ctx.drawImage(covid, covids.x, (covids.y += 10), covids.w, covids.h);
 }
 
 function drawCar() {
@@ -153,7 +153,7 @@ let score = 0;
 function startGame() {
   z++;
   let i = 0;
-  i += 0.5;
+  i += 1;
 
   if (z % 100 === 0) {
     score += 1;

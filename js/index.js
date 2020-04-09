@@ -35,8 +35,7 @@ var covids = {
   w: 500,
   h: 600,
   image: covid,
-}
-
+};
 
 let arrObs = [
   (obs1 = {
@@ -81,10 +80,9 @@ function thirdObstacle(i, obstacle) {
   ctx.drawImage(juanchito, obs3.x + 195, obs3.y - 30, 80, 100);
 }
 
-function boyCovid(i){
-  ctx.drawImage(covid, covids.x, covids.y+=i, covids.w, covids.h);
+function boyCovid(i) {
+  ctx.drawImage(covid, covids.x, (covids.y += i), covids.w, covids.h);
 }
-
 
 function drawCar() {
   ctx.drawImage(car.image, car.x, car.y, car.w, car.h);
@@ -133,9 +131,18 @@ function detectMove() {
   };
 }
 
+let z = 0;
+let score = 0;
 function startGame() {
+  z++;
   let i = 0;
   i += 0.5;
+
+  if (z % 100 === 0) {
+    score += 1;
+    document.getElementById('score').innerText = `Score:${score}`;
+  }
+
   document.getElementsByClassName('game-intro')[0].style.display = 'none';
   drawBoard();
   drawCar();

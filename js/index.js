@@ -11,42 +11,83 @@ carImg.src = './images/car.png'; //Loads the car
 let boardImg = new Image();
 boardImg.src = './images/road.png'; //Loads the car
 
-//This is our car
-let car = {
+let niko = new Image();
+niko.src = './images/niko.jpeg';
+let stefan = new Image();
+stefan.src = './images/stefan.jpeg';
+let juanchito = new Image();
+juanchito.src = './images/juanchito.jpeg';
+let covid = new Image();
+covid.src = './images/covid.png';
+//This is our car'
+var car = {
   //This is your car object
   x: canvas.width / 2 - 25,
   y: 500,
+  w: 50,
+  h: 50,
   image: carImg,
 };
 
-let obs1 = {
-  //This is your car object
-  x: 76,
-  y: 0,
-
-  // image: carImg,
-};
-
-let obs2 = {
-  //This is your car object
-  x: 325,
-  y: 150,
-  // image: carImg,
-};
-
-function obsLeft(i) {
-  console.log(i);
-  ctx.fillStyle = 'purple';
-  ctx.fillRect(obs1.x, (obs1.y += i), 250, 30);
+var covids = {
+  x: 50,
+  y: -1000,
+  w: 500,
+  h: 600,
+  image: covid,
 }
 
-function obsRight(i) {
+
+let arrObs = [
+  (obs1 = {
+    x: 76,
+    y: 30,
+    w: 250,
+    h: 30,
+  }),
+  (obs2 = {
+    x: 325,
+    y: 150,
+    w: 200,
+    h: 30,
+  }),
+  (obs3 = {
+    x: 325,
+    y: -150,
+    w: 200,
+    h: 30,
+  }),
+];
+
+const createObstacle = (obs, i) => {
+  return ctx.fillRect(obs.x, (obs.y += i), obs.w, obs.h);
+};
+
+function firstObstacle(i, obstacle) {
   ctx.fillStyle = 'purple';
-  ctx.fillRect(obs2.x, (obs2.y += i), 200, 30);
+  createObstacle(obstacle, i);
+  ctx.drawImage(niko, obs1.x - 80, obs1.y - 30, 80, 100);
 }
+
+function secondObstacle(i, obstacle) {
+  ctx.fillStyle = 'red';
+  createObstacle(obstacle, i);
+  ctx.drawImage(stefan, obs2.x + 195, obs2.y - 30, 80, 100);
+}
+
+function thirdObstacle(i, obstacle) {
+  ctx.fillStyle = 'blue';
+  createObstacle(obstacle, i);
+  ctx.drawImage(juanchito, obs3.x + 195, obs3.y - 30, 80, 100);
+}
+
+function boyCovid(i){
+  ctx.drawImage(covid, covids.x, covids.y+=i, covids.w, covids.h);
+}
+
 
 function drawCar() {
-  ctx.drawImage(car.image, car.x, car.y, 50, 50);
+  ctx.drawImage(car.image, car.x, car.y, car.w, car.h);
 }
 
 function drawBoard() {
@@ -54,34 +95,26 @@ function drawBoard() {
 }
 
 // DETECT COLLISION CODE
-function detectCollision() {
-  var a = { x: obsRight.x, y: obsRight.y, width: 200, height: 200 }; //Our purple square
-  var b = { x: car.x, y: car.y, width: 100, height: 140 }; //Our car
-
-
-console.log((
-  a.x < b.x + b.width &&
-  a.x + a.width > b.x &&
-  a.y < b.y + b.height &&
-  a.y + a.height > b.y
-))
-
-  if (
-    a.x < b.x + b.width &&
-    a.x + a.width > b.x &&
-    a.y < b.y + b.height &&
-    a.y + a.height > b.y
-  ) {
-    // collision detected!
-    console.log(' the rectangles colided');
-  }
+function detectCollision(obs) {
+  obs.map((obj) => {
+    var a = { x: obj.x, y: obj.y, width: obj.w, height: obj.h }; //Our obstacles
+    var b = { x: car.x, y: car.y, width: car.w, height: car.h }; //Our car
+    if (
+      a.x < b.x + b.width &&
+      a.x + a.width > b.x &&
+      a.y < b.y + b.height &&
+      a.y + a.height > b.y
+    ) {
+      // collision detected!
+      console.log(' the rectangles colided');
+    }
+  });
 }
 
 //CAR MOVEMENT
 
 function detectMove() {
   document.body.onkeydown = function (e) {
-    console.log(e);
     switch (e.keyCode) {
       case 37:
         car.x === 75
@@ -102,14 +135,16 @@ function detectMove() {
 
 function startGame() {
   let i = 0;
-  i += 2;
+  i += 0.5;
   document.getElementsByClassName('game-intro')[0].style.display = 'none';
   drawBoard();
   drawCar();
-  obsLeft(i);
-  obsRight(i);
-  detectCollision()
-  
+  boyCovid(i);
+  firstObstacle(i, arrObs[0]);
+  secondObstacle(i, arrObs[1]);
+  thirdObstacle(i, arrObs[2]);
+  detectCollision(arrObs);
+
   animateId = window.requestAnimationFrame(startGame); //Game rendering -infinite loop that goes super fast
 }
 

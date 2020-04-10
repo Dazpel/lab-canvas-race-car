@@ -217,9 +217,11 @@ function startGame() {
 }
 
 window.onload = () => {
+  alert('Lower your volume, the game contains music... also... Wait till the score reaches 12. for a bonus :)')
   document.getElementById('start').play();
   document.getElementById('game-board').style.display = 'none';
   document.getElementById('start-button').onclick = () => {
+   
     setTimeout(() => {
       tracker(`SOMETHING IS COMING! BEWARE!`)
       document.getElementById('playing').pause();

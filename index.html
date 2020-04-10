@@ -5,10 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <link rel="stylesheet" href="styles/style.css" />
+    <link rel="icon" type="image/png" sizes="32x32" href="https://www.ferrari.com/static/favicon_32x32.png">
     <title>Race Car</title>
   </head>
   <body>
+    <audio id="start" src="./music/startGame.mp3" loop="loop"></audio>
+    <audio id="playing" src="./music/playing.mp3" loop="loop"></audio>
+    <audio id="boss" src="./music/boss.mp3" loop="loop"></audio>
+    <audio id="collision" src="./music/collision.mp3"></audio>
     <div class="game-intro">
+      
       <img src="./images/logo.png" alt="" class="logo-img" />
       <br />
       <button id="start-button">StartGame</button>
@@ -17,10 +23,17 @@
     </div>
 
     <div id="game-board">
+      <divc class="title"><h1>Web Development March Cohort: OBSTACLES!</h1></divc>
       <div id="score">Score: 00</div>
-      <canvas id="canvas" width="500" height="700"></canvas>
+      <div id="tracker">
+        <ol >
+        
+        </ol>
+      </div>
+      <canvas id="canvas" width="500" height="1000"></canvas>
     </div>
-
+    
     <script type="text/javascript" src="js/index.js"></script>
   </body>
 </html>
+

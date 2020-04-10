@@ -5,6 +5,12 @@ canvas.height = 600;
 const ctx = canvas.getContext('2d');
 let animateId = null;
 
+const tracker = (message) => {
+  var list = document.getElementById('tracker');
+  let newItem = `<li>${message}</li>`;
+  list.insertAdjacentHTML('beforeend', newItem);
+};
+
 //*Image load and drawing with canvas*/
 let carImg = new Image();
 carImg.src = './images/car.png'; //Loads the car
@@ -17,13 +23,19 @@ let stefan = new Image();
 stefan.src = './images/stefan.jpeg';
 let juanchito = new Image();
 juanchito.src = './images/juanchito.jpeg';
+let react = new Image();
+react.src = './images/react.png';
+let css = new Image();
+css.src = './images/css.png';
+let js = new Image();
+js.src = './images/js.png';
 let covid = new Image();
 covid.src = './images/covid.png';
 //This is our car'
 var car = {
   //This is your car object
   x: canvas.width / 2 - 25,
-  y: 500,
+  y: 540,
   w: 50,
   h: 50,
   image: carImg,
@@ -39,49 +51,70 @@ var covids = {
 
 let arrObs = [
   (obs1 = {
+    name: 'Nico',
     x: 76,
-    y: 30,
-    w: 250,
-    h: 30,
+    y: -560,
+    w: 100,
+    h: 100,
+    image: niko,
   }),
   (obs2 = {
-    x: 325,
-    y: 150,
-    w: 200,
-    h: 30,
+    name: 'Stefan',
+    x: 140,
+    y: -765,
+    w: 100,
+    h: 100,
+    image: stefan,
   }),
   (obs3 = {
-    x: 325,
-    y: -150,
-    w: 200,
-    h: 30,
+    name: 'Juanchito',
+    x: 210,
+    y: -960,
+    w: 100,
+    h: 100,
+    image: juanchito,
+  }),
+  (obs4 = {
+    name: 'React',
+    x: 280,
+    y: -1160,
+    w: 100,
+    h: 100,
+    image: react,
+  }),
+  (obs3 = {
+    name: 'Css',
+    x: 350,
+    y: -1360,
+    w: 100,
+    h: 100,
+    image: css,
+  }),
+  (obs3 = {
+    name: 'Javascript',
+    x: 420,
+    y: -1560,
+    w: 100,
+    h: 100,
+    image: js,
   }),
 ];
 
 const createObstacle = (obs, i) => {
-  return ctx.fillRect(obs.x, (obs.y += i), obs.w, obs.h);
+  let rX = Math.floor(Math.random() * (430 - 76) + 76);
+  if (obs.y > 610) {
+    obs.y = -150;
+    obs.x = rX;
+  }
+
+  ctx.drawImage(obs.image, obs.x, (obs.y += i), obs.w, obs.h);
 };
 
-function firstObstacle(i, obstacle) {
-  ctx.fillStyle = 'purple';
-  createObstacle(obstacle, i);
-  ctx.drawImage(niko, obs1.x - 80, obs1.y - 30, 80, 100);
-}
-
-function secondObstacle(i, obstacle) {
-  ctx.fillStyle = 'red';
-  createObstacle(obstacle, i);
-  ctx.drawImage(stefan, obs2.x + 195, obs2.y - 30, 80, 100);
-}
-
-function thirdObstacle(i, obstacle) {
-  ctx.fillStyle = 'blue';
-  createObstacle(obstacle, i);
-  ctx.drawImage(juanchito, obs3.x + 195, obs3.y - 30, 80, 100);
-}
-
-function boyCovid(i) {
-  ctx.drawImage(covid, covids.x, (covids.y += 10), covids.w, covids.h);
+function boyCovid(isTime) {
+  
+  if (isTime > 12) {
+    ctx.drawImage(covid, covids.x, (covids.y += 10), covids.w, covids.h);
+  }
 }
 
 function drawCar() {
@@ -104,13 +137,16 @@ function detectCollision(obs) {
       a.y + a.height > b.y
     ) {
       // collision detected!
-      console.log(' the rectangles colided');
+      obj.y = -Math.floor(Math.random() * (250 - 150) + 150);
+      obj.x = Math.floor(Math.random() * (430 - 76) + 76);
+      tracker(`Collided with ${obj.name}`);
     }
   });
 }
 
-function covidCollision(virus){
-  var a = { x: virus.x, y: virus.y, width: virus.w, height: virus.h-20 }; //Our obstacles
+function covidCollision(virus) {
+  
+  var a = { x: virus.x, y: virus.y, width: virus.w, height: virus.h - 20 }; //Our obstacles
   var b = { x: car.x, y: car.y, width: car.w, height: car.h }; //Our car
   if (
     a.x < b.x + b.width &&
@@ -119,11 +155,14 @@ function covidCollision(virus){
     a.y + a.height > b.y
   ) {
     // collision detected!
+    document.getElementById('boss').pause();
+
+    document.getElementById('collision').play();
+    tracker(`You cannot scape the Rona...`);
     setTimeout(() => {
-      window.location.reload();
-    }, 2000);
-    alert("Ooopsss... covid got ya buddy!")
-    requestAnimationFrame.cancelAnimationFrame(startGame)
+      location.reload();
+    }, 3600);
+    window.cancelAnimationFrame();
   }
 }
 
@@ -132,16 +171,16 @@ function covidCollision(virus){
 function detectMove() {
   document.body.onkeydown = function (e) {
     switch (e.keyCode) {
+      case 38:
+      case 40:
+        e.preventDefault();
+        break;
       case 37:
-        car.x === 75
-          ? console.log('Border!')
-          : ((car.x -= 20), console.log(car.x));
+        car.x === 75 ? tracker(`Cannot leave the road dummy!`) : (car.x -= 20);
         break;
 
       case 39:
-        car.x === 475
-          ? console.log('Border!')
-          : ((car.x += 20), console.log(car.x));
+        car.x === 475 ? tracker(`Cannot leave the road dummy!`) : (car.x += 20);
         break;
       default:
         break;
@@ -150,34 +189,45 @@ function detectMove() {
 }
 
 let z = 0;
-let score = 0;
+var score = 0;
+
 function startGame() {
   z++;
   let i = 0;
-  i += 1;
+  i += 2;
 
   if (z % 100 === 0) {
     score += 1;
     document.getElementById('score').innerText = `Score:${score}`;
   }
-
+  
   document.getElementsByClassName('game-intro')[0].style.display = 'none';
+  document.getElementById('game-board').style.display = 'grid';
+
   drawBoard();
   drawCar();
-  boyCovid(i);
-  firstObstacle(i, arrObs[0]);
-  secondObstacle(i, arrObs[1]);
-  thirdObstacle(i, arrObs[2]);
+  arrObs.map((x) => createObstacle(x, i));
   detectCollision(arrObs);
 
-  covidCollision(covids)
+  
+  boyCovid(score);
+  covidCollision(covids);
 
   animateId = window.requestAnimationFrame(startGame); //Game rendering -infinite loop that goes super fast
 }
 
 window.onload = () => {
+  document.getElementById('start').play();
+  document.getElementById('game-board').style.display = 'none';
   document.getElementById('start-button').onclick = () => {
+    setTimeout(() => {
+      tracker(`SOMETHING IS COMING! BEWARE!`)
+      document.getElementById('playing').pause();
+      document.getElementById('boss').play();
+    }, 20000);
     startGame();
+    document.getElementById('start').pause();
+  document.getElementById('playing').play();
     detectMove();
   };
 };

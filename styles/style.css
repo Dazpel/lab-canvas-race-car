@@ -1,14 +1,24 @@
+html{
+  display: grid;
+}
+
+
 body {
   padding: 0;
   text-align: center;
 }
 
 .game-intro {
-  float: left;
-  padding: 0% 10%;
+  /* float: left; */
+  
+  align-content: center;
+  justify-items: center;
+  height: 100vh;
+  background-color: #F5F5F5;
 }
 
 .game-intro p {
+  
   font-size: 18px;
   font-family: "Verdana"
 }
@@ -33,6 +43,28 @@ body button {
 }
 
 #game-board {
-    float: left;
-    padding: 20px 0px;
+    /* float: left; */
+    /* align-content: center; */
+    justify-items: center;
+    padding: 10px 0px;
+    background-color: #F5F5F5;
+    zoom: 90%;
+}
+
+#score{
+  font-size: 30px;
+    padding: 10px;
+    letter-spacing: 0.5px;
+}
+
+h1{
+  margin: 0;
+  padding: 0;
+}
+
+#tracker {
+  position: absolute;
+  top: 50px;
+  overflow: auto;
+  max-height: 500px;
 }

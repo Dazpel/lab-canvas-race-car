@@ -217,7 +217,7 @@ function startGame() {
 }
 
 window.onload = () => {
-  alert('Lower your volume, the game contains music... also... Wait till the score reaches 12. for a bonus :)')
+  alert('To keep in mind:\n\n 1.Lower your volume, the game contains music\n\n 2. If no music plays, refresh the page and quickly click in the page before this alert fires. Most browsers do not allow autoplay unless user clicks webpage first.\n\n 3. Lastly, wait till your score reaches 12 pts!')
   document.getElementById('start').play();
   document.getElementById('game-board').style.display = 'none';
   document.getElementById('start-button').onclick = () => {
